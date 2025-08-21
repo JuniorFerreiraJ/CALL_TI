@@ -1,5 +1,5 @@
 
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useCallback } from 'react'
 import Header from '../../components/Header'
 import Title from '../../components/Title'
 import { FiPlusCircle } from 'react-icons/fi'
@@ -69,10 +69,10 @@ export default function New() {
     }
 
     loadCustomers();
-  }, [id])
+  }, [id, loadId])
 
 
-  async function loadId(lista) {
+  const loadId = useCallback(async (lista) => {
     try {
       const { data, error } = await supabase
         .from('tickets')
@@ -104,7 +104,7 @@ export default function New() {
       console.log(error);
       setIdCustomer(false);
     }
-  }
+  }, [id]);
 
 
   function handleOptionChange(e) {

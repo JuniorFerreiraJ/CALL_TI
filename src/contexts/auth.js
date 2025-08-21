@@ -13,7 +13,7 @@ function AuthProvider({ children }) {
     const initAuth = async () => {
       try {
         console.log('🚀 Iniciando sistema de autenticação...')
-        
+
         // Testa conectividade
         const isConnected = await testConnection()
         if (!isConnected) {
@@ -21,7 +21,7 @@ function AuthProvider({ children }) {
           setLoading(false)
           return
         }
-        
+
         // Verifica se há usuário logado
         await getUser()
       } catch (error) {
@@ -35,12 +35,12 @@ function AuthProvider({ children }) {
       try {
         console.log('🔍 Verificando usuário atual...');
         const { data: { user }, error } = await supabase.auth.getUser();
-        
+
         if (error) {
           console.error('❌ Erro ao verificar usuário:', error);
           return;
         }
-        
+
         if (user) {
           console.log('✅ Usuário encontrado:', user.id);
           // Busca dados adicionais do usuário
@@ -81,7 +81,7 @@ function AuthProvider({ children }) {
     // Listener para mudanças de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
       console.log('🔄 Evento de autenticação:', event, session?.user?.id);
-      
+
       if (session?.user) {
         try {
           const { data: profile, error: profileError } = await supabase
@@ -125,7 +125,7 @@ function AuthProvider({ children }) {
     try {
       console.log('🔐 Tentando login para:', email);
       console.log('🌐 Supabase URL:', process.env.REACT_APP_SUPABASE_URL);
-      
+
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -133,7 +133,7 @@ function AuthProvider({ children }) {
 
       if (error) {
         console.error('❌ Erro no login Supabase:', error);
-        
+
         // Tratamento específico para email não confirmado
         if (error.message.includes('Email not confirmed')) {
           console.log('📧 Email não confirmado, tentando reenviar...');

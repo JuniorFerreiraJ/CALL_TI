@@ -1,0 +1,72 @@
+form textarea {
+  resize: none;
+  height: 105px;
+}
+
+form input[type="radio"] {
+  margin: 15px 0;
+}
+
+form input[type="radio"]:not(:first-child) {
+  margin-left: 15px;
+}
+
+.status span {
+  padding-left: 0.5em;
+  font-size: 1.3em;
+}
+
+.status {
+  margin-bottom: 1em;
+}
+
+/* Melhorias visuais */
+form.form-profile label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+form.form-profile input,
+form.form-profile select,
+form.form-profile textarea {
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin: 6px 0 12px;
+  outline: none;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+form.form-profile input:focus,
+form.form-profile select:focus,
+form.form-profile textarea:focus {
+  border-color: #3583f6;
+  box-shadow: 0 0 0 3px rgba(53, 131, 246, 0.15);
+}
+
+form.form-profile button[type="submit"] {
+  background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+form.form-profile button[type="submit"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(24, 28, 46, .25);
+}
+
+.grid.two {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media screen and (max-width: 600px) {
+  .grid.two {
+    grid-template-columns: 1fr;
+  }
+}

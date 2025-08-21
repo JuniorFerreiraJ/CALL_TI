@@ -1,0 +1,230 @@
+.new {
+  float: right;
+  margin-bottom: 1.5em;
+  background: linear-gradient(135deg, #83bf02 0%, #5fd204 100%);
+  padding: 0.7em 1.2em;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  font-weight: 600;
+  color: #FFF;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(131, 191, 2, 0.3);
+  animation: fadeInScale 0.6s ease-out 0.2s both;
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.new svg {
+  margin-right: 5px;
+  transition: transform 0.3s ease;
+}
+
+.new:hover {
+  background: linear-gradient(135deg, #5fd204 0%, #4bb503 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 25px rgba(131, 191, 2, 0.4);
+}
+
+.new:hover svg {
+  transform: rotate(90deg);
+}
+
+.new:active {
+  transform: translateY(-1px) scale(1);
+}
+
+.dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+table {
+  border: 1px solid #E0E0E0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+table caption {
+  font-size: 1.5em;
+  margin: 0.5em 0 0.75em;
+}
+
+table tr {
+  background-color: #FAFAFA;
+  border: 1px solid #E8E8E8;
+  padding: 0.35em;
+  transition: all 0.3s ease;
+}
+
+table tbody tr:hover {
+  background-color: #F0F8FF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+table thead tr {
+  background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
+  color: white;
+}
+
+table thead tr:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+table th,
+table td {
+  padding: 0.60em;
+  text-align: center;
+}
+
+table th {
+  font-size: 0.85em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: white;
+  padding: 1em 0.6em;
+}
+
+table td .action {
+  border: 0;
+  padding: 8px;
+  border-radius: 6px;
+  display: inline-block;
+  margin-right: 6px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+table td .action:hover {
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+table td .action svg {
+  vertical-align: middle;
+}
+
+table td .badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  color: #FFF;
+  font-weight: 500;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+}
+
+table td .badge:hover {
+  transform: scale(1.05);
+}
+
+.dashboard span {
+  margin: 2em 0;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.btn-more {
+  margin: 1.5em 0;
+  padding: 0.8em 1.5em;
+  background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
+  border: 0;
+  border-radius: 8px;
+  font-size: 1.1em;
+  color: #FFF;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  box-shadow: 0 4px 15px rgba(24, 28, 46, 0.3);
+}
+
+.btn-more:hover {
+  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(24, 28, 46, 0.4);
+}
+
+.btn-more:active {
+  transform: translateY(0);
+}
+
+@media screen and (max-width: 600px) {
+  table {
+    border: 0;
+  }
+
+  ;
+
+  table caption {
+    font-size: 1.3em;
+  }
+
+  table thead {
+    border: none;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+  }
+
+  table tr {
+    border-bottom: 3px solid #DDD;
+    display: block;
+    margin-bottom: 0.60em;
+  }
+
+  table td {
+    border-bottom: 1px solid #DDD;
+    display: block;
+    font-size: 0.8em;
+    text-align: right;
+  }
+
+  table td::before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}

@@ -1,0 +1,84 @@
+.customers-list h2 {
+    margin: 1.2em 0 0.6em;
+}
+
+.customers-list .loading,
+.customers-list .empty {
+    display: block;
+    padding: 0.8em 0;
+    color: #555;
+}
+
+.customers-list table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #E0E0E0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.customers-list thead tr {
+    background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
+    color: #fff;
+}
+
+.customers-list th,
+.customers-list td {
+    padding: 0.75em;
+    text-align: left;
+}
+
+.customers-list tbody tr {
+    background: #fafafa;
+    border-bottom: 1px solid #eee;
+}
+
+.customers-list tbody tr:hover {
+    background: #F0F8FF;
+}
+
+.customers-list .action {
+    border: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: #3583f6;
+    color: #fff;
+    cursor: pointer;
+}
+
+.customers-list .action.danger {
+    background: #e83f5b;
+}
+
+@media screen and (max-width: 600px) {
+    .customers-list table {
+        border: 0;
+    }
+
+    .customers-list thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+    }
+
+    .customers-list tr {
+        display: block;
+        border-bottom: 3px solid #ddd;
+        margin-bottom: 0.6em;
+    }
+
+    .customers-list td {
+        display: block;
+        text-align: right;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .customers-list td::before {
+        content: attr(data-label);
+        float: left;
+        font-weight: 600;
+        text-transform: uppercase;
+    }
+}

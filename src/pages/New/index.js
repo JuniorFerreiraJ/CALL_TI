@@ -32,6 +32,41 @@ export default function New() {
   const [priority, setPriority] = useState('Baixa')
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  // Define loadId ANTES do useEffect para evitar no-use-before-define
+  const loadId = useCallback(async (lista) => {
+    try {
+      const { data, error } = await supabase
+        .from('tickets')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        setAssunto(data.subject);
+        setStatus(data.status);
+        setComplemento(data.description);
+        if (data.priority) setPriority(data.priority);
+
+        // Converte ISO -> valor para input datetime-local (YYYY-MM-DDTHH:mm)
+        if (data.scheduled_at) {
+          const dt = new Date(data.scheduled_at);
+          const offsetMinutes = dt.getTimezoneOffset();
+          const local = new Date(dt.getTime() - offsetMinutes * 60000);
+          setScheduledAt(local.toISOString().slice(0, 16));
+        }
+
+        let index = lista.findIndex(item => item.id === data.customer_id);
+        setCustomerSelected(index);
+        setIdCustomer(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setIdCustomer(false);
+    }
+  }, [id]);
+
 
   useEffect(() => {
     async function loadCustomers() {
@@ -72,39 +107,7 @@ export default function New() {
   }, [id, loadId])
 
 
-  const loadId = useCallback(async (lista) => {
-    try {
-      const { data, error } = await supabase
-        .from('tickets')
-        .select('*')
-        .eq('id', id)
-        .single();
-
-      if (error) throw error;
-
-      if (data) {
-        setAssunto(data.subject);
-        setStatus(data.status);
-        setComplemento(data.description);
-        if (data.priority) setPriority(data.priority);
-
-        // Converte ISO -> valor para input datetime-local (YYYY-MM-DDTHH:mm)
-        if (data.scheduled_at) {
-          const dt = new Date(data.scheduled_at);
-          const offsetMinutes = dt.getTimezoneOffset();
-          const local = new Date(dt.getTime() - offsetMinutes * 60000);
-          setScheduledAt(local.toISOString().slice(0, 16));
-        }
-
-        let index = lista.findIndex(item => item.id === data.customer_id);
-        setCustomerSelected(index);
-        setIdCustomer(true);
-      }
-    } catch (error) {
-      console.log(error);
-      setIdCustomer(false);
-    }
-  }, [id]);
+  
 
 
   function handleOptionChange(e) {

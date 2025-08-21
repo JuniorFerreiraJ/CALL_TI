@@ -132,19 +132,22 @@ function AuthProvider({ children }) {
 
       if (error) throw error;
 
-      // Cria perfil do usuário
-      const { error: profileError } = await supabase
-        .from('users')
-        .insert([
-          {
-            id: data.user.id,
-            name,
-            company,
-            email
-          }
-        ]);
+      // Se confirmação por e-mail estiver habilitada, não haverá sessão aqui.
+      // Nesses casos, o perfil será criado pelo trigger no banco (handle_new_user).
+      if (data.session) {
+        const { error: profileError } = await supabase
+          .from('users')
+          .insert([
+            {
+              id: data.user.id,
+              name,
+              company,
+              email
+            }
+          ]);
 
-      if (profileError) throw profileError;
+        if (profileError) throw profileError;
+      }
 
       // Busca dados criados
       const { data: profile } = await supabase

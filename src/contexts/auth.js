@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { supabase } from '../services/supabaseConnection';
+import { supabase, testConnection } from '../services/supabaseConnection';
 
 export const AuthContext = createContext({});
 
@@ -9,51 +9,108 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Testa conexão com Supabase primeiro
+    const initAuth = async () => {
+      try {
+        console.log('🚀 Iniciando sistema de autenticação...')
+        
+        // Testa conectividade
+        const isConnected = await testConnection()
+        if (!isConnected) {
+          console.error('❌ Não foi possível conectar ao Supabase')
+          setLoading(false)
+          return
+        }
+        
+        // Verifica se há usuário logado
+        await getUser()
+      } catch (error) {
+        console.error('❌ Erro ao inicializar autenticação:', error)
+        setLoading(false)
+      }
+    }
+
     // Verifica se há usuário logado
     const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        // Busca dados adicionais do usuário
-        const { data: profile } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-
-        if (profile) {
-          setUser({
-            uid: user.id,
-            email: user.email,
-            name: profile.name,
-            avatarUrl: profile.avatar_url,
-            company: profile.company
-          });
+      try {
+        console.log('🔍 Verificando usuário atual...');
+        const { data: { user }, error } = await supabase.auth.getUser();
+        
+        if (error) {
+          console.error('❌ Erro ao verificar usuário:', error);
+          return;
         }
+        
+        if (user) {
+          console.log('✅ Usuário encontrado:', user.id);
+          // Busca dados adicionais do usuário
+          const { data: profile, error: profileError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', user.id)
+            .single();
+
+          if (profileError) {
+            console.error('❌ Erro ao buscar perfil:', profileError);
+            return;
+          }
+
+          if (profile) {
+            console.log('✅ Perfil carregado:', profile.name);
+            setUser({
+              uid: user.id,
+              email: user.email,
+              name: profile.name,
+              avatarUrl: profile.avatar_url,
+              company: profile.company,
+              isAdmin: profile.is_admin
+            });
+          }
+        } else {
+          console.log('ℹ️ Nenhum usuário logado');
+        }
+      } catch (error) {
+        console.error('❌ Erro geral ao verificar usuário:', error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     getUser();
 
     // Listener para mudanças de autenticação
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log('🔄 Evento de autenticação:', event, session?.user?.id);
+      
       if (session?.user) {
-        const { data: profile } = await supabase
-          .from('users')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
+        try {
+          const { data: profile, error: profileError } = await supabase
+            .from('users')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
 
-        if (profile) {
-          setUser({
-            uid: session.user.id,
-            email: session.user.email,
-            name: profile.name,
-            avatarUrl: profile.avatar_url,
-            company: profile.company
-          });
+          if (profileError) {
+            console.error('❌ Erro ao buscar perfil na mudança de estado:', profileError);
+            return;
+          }
+
+          if (profile) {
+            console.log('✅ Perfil atualizado na mudança de estado:', profile.name);
+            setUser({
+              uid: session.user.id,
+              email: session.user.email,
+              name: profile.name,
+              avatarUrl: profile.avatar_url,
+              company: profile.company,
+              isAdmin: profile.is_admin
+            });
+          }
+        } catch (error) {
+          console.error('❌ Erro ao processar mudança de estado:', error);
         }
       } else {
+        console.log('ℹ️ Usuário deslogado');
         setUser(null);
       }
       setLoading(false);
@@ -66,14 +123,20 @@ function AuthProvider({ children }) {
   async function signIn(email, password) {
     setLoadingAuth(true);
     try {
+      console.log('🔐 Tentando login para:', email);
+      console.log('🌐 Supabase URL:', process.env.REACT_APP_SUPABASE_URL);
+      
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
 
       if (error) {
+        console.error('❌ Erro no login Supabase:', error);
+        
         // Tratamento específico para email não confirmado
         if (error.message.includes('Email not confirmed')) {
+          console.log('📧 Email não confirmado, tentando reenviar...');
           // Tenta reenviar o email de confirmação
           const { error: resendError } = await supabase.auth.resend({
             type: 'signup',
@@ -89,26 +152,35 @@ function AuthProvider({ children }) {
         throw error;
       }
 
+      console.log('✅ Login bem-sucedido:', data.user.id);
+
       // Busca dados do usuário
-      const { data: profile } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from('users')
         .select('*')
         .eq('id', data.user.id)
         .single();
 
+      if (profileError) {
+        console.error('❌ Erro ao buscar perfil após login:', profileError);
+        throw profileError;
+      }
+
       if (profile) {
+        console.log('✅ Perfil carregado após login:', profile.name);
         setUser({
           uid: data.user.id,
           email: data.user.email,
           name: profile.name,
           avatarUrl: profile.avatar_url,
-          company: profile.company
+          company: profile.company,
+          isAdmin: profile.is_admin
         });
       }
 
       return { success: true };
     } catch (error) {
-      console.error('Erro no login:', error);
+      console.error('❌ Erro geral no login:', error);
       return { success: false, error: error.message };
     } finally {
       setLoadingAuth(false);

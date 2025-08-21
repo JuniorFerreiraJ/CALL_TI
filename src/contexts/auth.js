@@ -30,6 +30,9 @@ function AuthProvider({ children }) {
       }
     }
 
+    // Executa a inicialização
+    initAuth()
+
     // Verifica se há usuário logado
     const getUser = async () => {
       try {

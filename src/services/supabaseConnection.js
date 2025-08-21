@@ -7,9 +7,11 @@ const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
 console.log('🔧 Configuração Supabase:')
 console.log('URL:', supabaseUrl ? '✅ Configurada' : '❌ Não configurada')
 console.log('Anon Key:', supabaseAnonKey ? '✅ Configurada' : '❌ Não configurada')
+console.log('🔗 URL completa:', supabaseUrl)
+console.log('🔑 Anon Key (primeiros 20 chars):', supabaseAnonKey ? `${supabaseAnonKey.substring(0, 20)}...` : 'N/A')
 
 if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('❌ Variáveis de ambiente do Supabase não configuradas!')
+    throw new Error("❌ Variáveis de ambiente do Supabase não configuradas!")
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)

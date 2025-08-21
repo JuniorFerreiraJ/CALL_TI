@@ -9,29 +9,17 @@ function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Testa conexão com Supabase primeiro
-    const initAuth = async () => {
-      try {
-        console.log('🚀 Iniciando sistema de autenticação...')
+    // Timeout de segurança para evitar loading infinito
+    const safetyTimeout = setTimeout(() => {
+      console.log('⚠️ Timeout de segurança - Forçando fim do loading');
+      setLoading(false);
+    }, 10000); // Reduzido para 10 segundos
 
-        // Testa conectividade
-        const isConnected = await testConnection()
-        if (!isConnected) {
-          console.error('❌ Não foi possível conectar ao Supabase')
-          setLoading(false)
-          return
-        }
-
-        // Verifica se há usuário logado
-        await getUser()
-      } catch (error) {
-        console.error('❌ Erro ao inicializar autenticação:', error)
-        setLoading(false)
-      }
-    }
-
-    // Executa a inicialização
-    initAuth()
+    // Fallback adicional para garantir que loading seja finalizado
+    const fallbackTimeout = setTimeout(() => {
+      console.log('🔄 Fallback - Finalizando loading');
+      setLoading(false);
+    }, 5000); // 5 segundos
 
     // Verifica se há usuário logado
     const getUser = async () => {
@@ -41,6 +29,7 @@ function AuthProvider({ children }) {
 
         if (error) {
           console.error('❌ Erro ao verificar usuário:', error);
+          setLoading(false);
           return;
         }
 
@@ -55,6 +44,7 @@ function AuthProvider({ children }) {
 
           if (profileError) {
             console.error('❌ Erro ao buscar perfil:', profileError);
+            setLoading(false);
             return;
           }
 
@@ -79,6 +69,7 @@ function AuthProvider({ children }) {
       }
     };
 
+    // Executa verificação direta sem testar conexão primeiro
     getUser();
 
     // Listener para mudanças de autenticação
@@ -116,10 +107,13 @@ function AuthProvider({ children }) {
         console.log('ℹ️ Usuário deslogado');
         setUser(null);
       }
-      setLoading(false);
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      clearTimeout(safetyTimeout);
+      clearTimeout(fallbackTimeout);
+      subscription.unsubscribe();
+    };
   }, []);
 
   // Login

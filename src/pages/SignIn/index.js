@@ -11,8 +11,13 @@ export default function SignIn() {
   const navigate = useNavigate();
   const { signIn, loadingAuth, signed, loading } = useContext(AuthContext)
 
+  // Debug do estado
+  console.log('🔍 SignIn - Estado atual:', { signed, loading, loadingAuth });
+
   useEffect(() => {
+    console.log('🔄 SignIn useEffect - signed:', signed, 'loading:', loading);
     if (signed && !loading) {
+      console.log('✅ Usuário autenticado, redirecionando para dashboard');
       navigate('/dashboard');
     }
   }, [signed, loading, navigate]);
@@ -20,11 +25,14 @@ export default function SignIn() {
   async function handleSignIn(e) {
     e.preventDefault();
     if (email !== '' && password !== '') {
+      console.log('🔐 Tentando fazer login...');
       const result = await signIn(email, password);
 
       if (result.success) {
+        console.log('✅ Login bem-sucedido');
         navigate('/dashboard');
       } else {
+        console.error('❌ Erro no login:', result.error);
         alert('Erro no login: ' + result.error);
       }
     }

@@ -3,11 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import logo from '../../assets/logo.png';
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../../contexts/auth'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
 
 export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const [messageType, setMessageType] = useState(''); // 'success' ou 'error'
   const navigate = useNavigate();
@@ -55,6 +57,10 @@ export default function SignUp() {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container-center">
       <div className="login">
@@ -88,14 +94,24 @@ export default function SignUp() {
             inputMode="email"
           />
 
-          <input
-            type="password"
-            placeholder="*******"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="new-password"
-            name="new-password"
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="*******"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="new-password"
+              name="new-password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+              title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            >
+              {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+            </button>
+          </div>
 
           <button type="submit" disabled={loadingAuth}>
             {loadingAuth ? "Carregando..." : "Cadastrar"}

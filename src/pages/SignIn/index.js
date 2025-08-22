@@ -4,10 +4,12 @@ import './signin.css'
 import logo from '../../assets/logo.png'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../../contexts/auth'
+import { FiEye, FiEyeOff } from 'react-icons/fi'
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
   const { signIn, loadingAuth } = useContext(AuthContext)
 
@@ -29,6 +31,10 @@ export default function SignIn() {
     }
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div className="container-center">
       <div className="login">
@@ -47,14 +53,24 @@ export default function SignIn() {
             name="email"
             inputMode="email"
           />
-          <input
-            type="password"
-            placeholder="*******"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            name="password"
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="*******"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              name="password"
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+              title={showPassword ? "Ocultar senha" : "Mostrar senha"}
+            >
+              {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+            </button>
+          </div>
           <button type="submit" disabled={loadingAuth}>
             {loadingAuth ? 'Carregando...' : 'Acessar'}
           </button>

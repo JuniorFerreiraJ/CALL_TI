@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-// ⚠️ TEMPORÁRIO - Trocar por variáveis de ambiente depois!
-const supabaseUrl = "https://zglwokmmhhrmukhdhqlt.supabase.co"
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnbHdva21taGhybXVraGRocWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjA4ODIsImV4cCI6MjA3MTI5Njg4Mn0.Pl6g465ZIZuWAuTtGiZcxPe3JXdSaoTv-bNFmzHJr3E"
+// Configuração do Supabase usando variáveis de ambiente
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL || "https://zglwokmmhhrmukhdhqlt.supabase.co"
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpnbHdva21taGhybXVraGRocWx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTU3MjA4ODIsImV4cCI6MjA3MTI5Njg4Mn0.Pl6g465ZIZuWAuTtGiZcxPe3JXdSaoTv-bNFmzHJr3E"
 
 // Debug das variáveis de ambiente
 console.log('🔧 Configuração Supabase:')
@@ -11,7 +11,14 @@ console.log('Anon Key:', supabaseAnonKey ? '✅ Configurada' : '❌ Não configu
 console.log('🔗 URL completa:', supabaseUrl)
 console.log('🔑 Anon Key (primeiros 20 chars):', supabaseAnonKey ? `${supabaseAnonKey.substring(0, 20)}...` : 'N/A')
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+// Criação de uma única instância do cliente Supabase
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true
+    }
+})
 
 // Teste de conectividade básica
 export const testConnection = async () => {

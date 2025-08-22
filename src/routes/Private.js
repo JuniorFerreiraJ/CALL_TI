@@ -1,10 +1,11 @@
 import { useContext, useState, useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation } from 'react-router-dom'
 import { AuthContext } from '../contexts/auth'
 
 export default function Private({ children }) {
   const { signed, loading } = useContext(AuthContext);
   const [showRetry, setShowRetry] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     // Mostra botão de retry após 10 segundos
@@ -15,10 +16,10 @@ export default function Private({ children }) {
     return () => clearTimeout(retryTimer);
   }, []);
 
-  console.log('Private Route - signed:', signed, 'loading:', loading);
+  console.log('🔒 Private Route - signed:', signed, 'loading:', loading, 'path:', location.pathname);
 
   if (loading) {
-    console.log('Private Route - Carregando...');
+    console.log('⏳ Private Route - Carregando...');
     return (
       <div style={{
         display: 'flex',
@@ -76,10 +77,11 @@ export default function Private({ children }) {
   }
 
   if (!signed) {
-    console.log('Private Route - Não autenticado, redirecionando para login');
-    return <Navigate to="/" />
+    console.log('❌ Private Route - Não autenticado, redirecionando para login');
+    // Redireciona para login com o path atual para voltar após login
+    return <Navigate to="/" state={{ from: location }} replace />
   }
 
-  console.log('Private Route - Autenticado, renderizando conteúdo');
+  console.log('✅ Private Route - Autenticado, renderizando conteúdo');
   return children;
 }

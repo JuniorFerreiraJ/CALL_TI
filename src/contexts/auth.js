@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { supabase, testConnection } from '../services/supabaseConnection';
+import { supabase } from '../services/supabaseConnection';
 
 export const AuthContext = createContext({});
 
@@ -13,13 +13,7 @@ function AuthProvider({ children }) {
     const safetyTimeout = setTimeout(() => {
       console.log('⚠️ Timeout de segurança - Forçando fim do loading');
       setLoading(false);
-    }, 10000); // Reduzido para 10 segundos
-
-    // Fallback adicional para garantir que loading seja finalizado
-    const fallbackTimeout = setTimeout(() => {
-      console.log('🔄 Fallback - Finalizando loading');
-      setLoading(false);
-    }, 5000); // 5 segundos
+    }, 10000);
 
     // Verifica se há usuário logado
     const getUser = async () => {
@@ -69,49 +63,54 @@ function AuthProvider({ children }) {
       }
     };
 
-    // Executa verificação direta sem testar conexão primeiro
+    // Executa verificação direta
     getUser();
 
-    // Listener para mudanças de autenticação
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // Listener para mudanças de autenticação - SEM async direto no callback
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       console.log('🔄 Evento de autenticação:', event, session?.user?.id);
 
-      if (session?.user) {
-        try {
-          const { data: profile, error: profileError } = await supabase
+      // Usa setTimeout para operações assíncronas dentro do callback
+      setTimeout(() => {
+        if (session?.user) {
+          console.log('✅ Sessão ativa detectada, buscando perfil...');
+
+          // Busca perfil do usuário de forma assíncrona
+          supabase
             .from('users')
             .select('*')
             .eq('id', session.user.id)
-            .single();
+            .single()
+            .then(({ data: profile, error: profileError }) => {
+              if (profileError) {
+                console.error('❌ Erro ao buscar perfil na mudança de estado:', profileError);
+                return;
+              }
 
-          if (profileError) {
-            console.error('❌ Erro ao buscar perfil na mudança de estado:', profileError);
-            return;
-          }
-
-          if (profile) {
-            console.log('✅ Perfil atualizado na mudança de estado:', profile.name);
-            setUser({
-              uid: session.user.id,
-              email: session.user.email,
-              name: profile.name,
-              avatarUrl: profile.avatar_url,
-              company: profile.company,
-              isAdmin: profile.is_admin
+              if (profile) {
+                console.log('✅ Perfil atualizado na mudança de estado:', profile.name);
+                setUser({
+                  uid: session.user.id,
+                  email: session.user.email,
+                  name: profile.name,
+                  avatarUrl: profile.avatar_url,
+                  company: profile.company,
+                  isAdmin: profile.is_admin
+                });
+              }
+            })
+            .catch((error) => {
+              console.error('❌ Erro ao processar mudança de estado:', error);
             });
-          }
-        } catch (error) {
-          console.error('❌ Erro ao processar mudança de estado:', error);
+        } else {
+          console.log('ℹ️ Usuário deslogado');
+          setUser(null);
         }
-      } else {
-        console.log('ℹ️ Usuário deslogado');
-        setUser(null);
-      }
+      }, 0);
     });
 
     return () => {
       clearTimeout(safetyTimeout);
-      clearTimeout(fallbackTimeout);
       subscription.unsubscribe();
     };
   }, []);
@@ -121,7 +120,6 @@ function AuthProvider({ children }) {
     setLoadingAuth(true);
     try {
       console.log('🔐 Tentando login para:', email);
-      console.log('🌐 Supabase URL:', process.env.REACT_APP_SUPABASE_URL);
 
       const { data, error } = await supabase.auth.signInWithPassword({
         email,

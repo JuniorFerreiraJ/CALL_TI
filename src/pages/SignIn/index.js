@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './signin.css'
 import logo from '../../assets/logo.png'
@@ -9,18 +9,7 @@ export default function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { signIn, loadingAuth, signed, loading } = useContext(AuthContext)
-
-  // Debug do estado
-  console.log('🔍 SignIn - Estado atual:', { signed, loading, loadingAuth });
-
-  useEffect(() => {
-    console.log('🔄 SignIn useEffect - signed:', signed, 'loading:', loading);
-    if (signed && !loading) {
-      console.log('✅ Usuário autenticado, redirecionando para dashboard');
-      navigate('/dashboard');
-    }
-  }, [signed, loading, navigate]);
+  const { signIn, loadingAuth } = useContext(AuthContext)
 
   async function handleSignIn(e) {
     e.preventDefault();
@@ -29,7 +18,9 @@ export default function SignIn() {
       const result = await signIn(email, password);
 
       if (result.success) {
-        console.log('✅ Login bem-sucedido');
+        console.log('✅ Login bem-sucedido, redirecionando...');
+        // O redirecionamento será feito automaticamente pelas rotas
+        // mas mantemos aqui para garantir
         navigate('/dashboard');
       } else {
         console.error('❌ Erro no login:', result.error);

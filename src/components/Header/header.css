@@ -8,6 +8,7 @@
   overflow: auto;
   box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
   animation: slideInLeft 0.5s ease-out;
+  z-index: 1000;
 }
 
 @keyframes slideInLeft {
@@ -31,6 +32,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  position: relative;
+}
+
+.sidebar-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 .sidebar-header {
@@ -46,9 +59,11 @@
   object-fit: cover;
   filter: drop-shadow(2px 3px 6px #121212);
   -webkit-filter: drop-shadow(2px 3px 6px #121212);
-  border: 3px solid rgba(255, 255, 255, 0.1);
+  border: 3px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
   animation: fadeInScale 0.6s ease-out 0.3s both;
+  position: relative;
+  z-index: 2;
 }
 
 .avatar-fallback {
@@ -57,7 +72,7 @@
   margin: auto;
   border-radius: 50%;
   background: linear-gradient(135deg, #3a6073 0%, #16222a 100%);
-  border: 3px solid rgba(255, 255, 255, 0.15);
+  border: 3px solid rgba(255, 255, 255, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,11 +82,13 @@
   font-size: 28px;
   letter-spacing: 1px;
   text-transform: uppercase;
+  position: relative;
+  z-index: 2;
 }
 
 .sidebar-header img:hover {
   transform: scale(1.05);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 @keyframes fadeInScale {
@@ -99,6 +116,8 @@
   position: relative;
   overflow: hidden;
   animation: fadeInRight 0.5s ease-out calc(0.1s * var(--delay, 0)) both;
+  border-radius: 0 8px 8px 0;
+  margin: 4px 0;
 }
 
 .sidebar a:nth-child(2) {
@@ -141,14 +160,17 @@
 .sidebar a svg {
   margin-right: 0.5rem;
   transition: all 0.3s ease;
+  width: 20px;
+  height: 20px;
 }
 
 .sidebar a:hover,
 .sidebar .active {
-  background: linear-gradient(135deg, rgba(18, 18, 18, 0.8) 0%, rgba(44, 62, 80, 0.8) 100%);
+  background: linear-gradient(135deg, rgba(18, 18, 18, 0.9) 0%, rgba(44, 62, 80, 0.9) 100%);
   color: #FFF;
   transform: translateX(5px);
   padding-left: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .sidebar a:hover::before {
@@ -163,6 +185,8 @@
   margin-left: 200px;
   padding: 1px 16px;
   animation: fadeInContent 0.6s ease-out 0.5s both;
+  min-height: 100vh;
+  background: #f8f9fa;
 }
 
 .user-name {
@@ -170,17 +194,24 @@
   text-align: center;
   color: #fff;
   margin-top: 8px;
+  position: relative;
+  z-index: 2;
+  font-weight: 500;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 .admin-badge {
   display: inline-block;
   margin-left: 8px;
-  background: #e83f5b;
+  background: linear-gradient(135deg, #e83f5b 0%, #c73e6f 100%);
   color: #fff;
-  padding: 2px 6px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-style: normal;
+  padding: 3px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 4px rgba(232, 63, 91, 0.3);
 }
 
 @keyframes fadeInContent {
@@ -195,19 +226,53 @@
   }
 }
 
+/* Botão de logout melhorado */
+.logout-btn {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin: 16px;
+  width: calc(100% - 32px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.logout-btn:hover {
+  background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.logout-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsividade melhorada */
 @media screen and (max-width: 700px) {
   .sidebar {
     width: 100%;
     height: auto;
     position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
 
   div.content {
     margin-left: 0;
+    padding: 16px;
   }
 
   .sidebar a {
     float: left;
+    margin: 2px;
+    border-radius: 8px;
+    padding: 12px 16px;
   }
 
   .sidebar-header {
@@ -217,16 +282,26 @@
   .sidebar a svg {
     display: none;
   }
-}
 
+  .logout-btn {
+    margin: 8px;
+    width: calc(100% - 16px);
+  }
+}
 
 @media screen and (max-width: 400px) {
   .sidebar a {
     text-align: center;
     float: none;
+    width: 100%;
+    margin: 2px 0;
   }
 
   .sidebar a svg {
     display: none;
+  }
+
+  .logout-btn {
+    margin: 8px 0;
   }
 }

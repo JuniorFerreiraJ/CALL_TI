@@ -219,8 +219,13 @@ export default function New() {
         <div className="container">
           <form className="form-profile" onSubmit={handleRegister}>
 
+            <div className="form-header">
+              <h2>{id ? "Editar Chamado" : "Novo Chamado"}</h2>
+              <p>{id ? "Atualize as informações do chamado selecionado" : "Preencha os dados para criar um novo chamado no sistema"}</p>
+            </div>
+
             <div className="grid two">
-              <div>
+              <div className="form-group">
                 <label>Clientes</label>
                 {
                   loadCustomer ? (
@@ -239,7 +244,7 @@ export default function New() {
                 }
               </div>
 
-              <div>
+              <div className="form-group">
                 <label>Assunto</label>
                 <select value={assunto} onChange={handleChangeSelect}>
                   <option value="Suporte">Suporte</option>
@@ -250,7 +255,7 @@ export default function New() {
             </div>
 
             <div className="grid two">
-              <div>
+              <div className="form-group">
                 <label>Status</label>
                 <div className="status">
                   <input
@@ -282,7 +287,7 @@ export default function New() {
                 </div>
               </div>
 
-              <div>
+              <div className="form-group">
                 <label>Prioridade</label>
                 <select value={priority} onChange={(e) => setPriority(e.target.value)}>
                   <option value="Baixa">Baixa</option>
@@ -293,24 +298,27 @@ export default function New() {
               </div>
             </div>
 
-            <label>Agendar para</label>
-            <input
-              type="datetime-local"
-              value={scheduledAt}
-              min={(new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16)}
-              onChange={(e) => setScheduledAt(e.target.value)}
-            />
+            <div className="form-group">
+              <label>Agendar para</label>
+              <input
+                type="datetime-local"
+                value={scheduledAt}
+                min={(new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16)}
+                onChange={(e) => setScheduledAt(e.target.value)}
+              />
+            </div>
 
-
-            <label>Complemento</label>
-            <textarea
-              type="text"
-              placeholder="Descreva seu problema (opcional)."
-              value={complemento}
-              maxLength={500}
-              onChange={(e) => setComplemento(e.target.value)}
-            />
-            <small>{complemento.length}/500</small>
+            <div className="form-group">
+              <label>Complemento</label>
+              <textarea
+                type="text"
+                placeholder="Descreva seu problema (opcional)."
+                value={complemento}
+                maxLength={500}
+                onChange={(e) => setComplemento(e.target.value)}
+              />
+              <small>{complemento.length}/500</small>
+            </div>
 
             <button type="submit" disabled={isSubmitting}>{isSubmitting ? 'Salvando...' : (id ? 'Atualizar' : 'Registrar')}</button>
 

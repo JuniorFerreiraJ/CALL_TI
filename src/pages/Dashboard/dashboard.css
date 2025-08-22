@@ -1,20 +1,41 @@
-.new {
-  float: right;
-  margin-bottom: 1.5em;
-  background: linear-gradient(135deg, #83bf02 0%, #5fd204 100%);
-  padding: 0.7em 1.2em;
-  border-radius: 8px;
+/* 🎨 Página de Chamados - Design Moderno e Funcional */
+
+/* 📱 Layout Principal */
+.dashboard {
+  position: relative;
   display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 🔘 Botão Novo Chamado */
+.new {
+  position: absolute;
+  top: 4rem;
+  right: 3rem;
+  display: inline-flex;
+  margin: 0;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  padding: 0.7rem 1.3rem;
+  border-radius: 12px;
   justify-content: center;
   align-items: center;
   border: 0;
   font-weight: 600;
   color: #FFF;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(131, 191, 2, 0.3);
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
   animation: fadeInScale 0.6s ease-out 0.2s both;
-  position: relative;
   overflow: hidden;
+  text-decoration: none;
+  font-size: 0.9rem;
+  min-width: 150px;
+  text-align: center;
+  z-index: 5;
 }
 
 @keyframes fadeInScale {
@@ -30,14 +51,16 @@
 }
 
 .new svg {
-  margin-right: 5px;
+  margin-right: 10px;
   transition: transform 0.3s ease;
+  width: 20px;
+  height: 20px;
 }
 
 .new:hover {
-  background: linear-gradient(135deg, #5fd204 0%, #4bb503 100%);
+  background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
   transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 25px rgba(131, 191, 2, 0.4);
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.4);
 }
 
 .new:hover svg {
@@ -48,23 +71,85 @@
   transform: translateY(-1px) scale(1);
 }
 
-.dashboard {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+/* 📊 Lista de Chamados */
+.calls-list {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+  width: 100%;
 }
 
-table {
-  border: 1px solid #E0E0E0;
-  margin: 0;
-  padding: 0;
+.calls-list h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e9ecef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+/* 🔍 Estados de Loading e Vazio */
+.loading,
+.empty {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e9ecef;
+  border-top: 4px solid #667eea;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.empty {
+  background: #f8f9fa;
+  border-radius: 16px;
+  border: 2px dashed #dee2e6;
+}
+
+.empty svg {
+  opacity: 0.3;
+  margin-bottom: 1rem;
+}
+
+/* 📋 Tabela de Chamados */
+.calls-table {
   width: 100%;
-  table-layout: fixed;
   border-collapse: collapse;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  background: white;
   animation: fadeInUp 0.6s ease-out 0.4s both;
 }
 
@@ -80,151 +165,276 @@ table {
   }
 }
 
-table caption {
-  font-size: 1.5em;
-  margin: 0.5em 0 0.75em;
+.calls-table thead tr {
+  background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+  color: white;
 }
 
-table tr {
-  background-color: #FAFAFA;
-  border: 1px solid #E8E8E8;
-  padding: 0.35em;
+.calls-table th {
+  padding: 1.2rem 1rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #5a6268;
+}
+
+.calls-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f8f9fa;
+  vertical-align: middle;
+  color: #495057;
+}
+
+.calls-table tbody tr {
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
-table tbody tr:hover {
-  background-color: #F0F8FF;
+.calls-table tbody tr:hover {
+  background: #f8f9ff;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-table thead tr {
-  background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
-  color: white;
+.calls-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
-table thead tr:hover {
-  transform: none;
-  box-shadow: none;
-}
-
-table th,
-table td {
-  padding: 0.60em;
-  text-align: center;
-}
-
-table th {
-  font-size: 0.85em;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+/* 🎯 Conteúdo das Células */
+.call-title {
   font-weight: 600;
-  color: white;
-  padding: 1em 0.6em;
+  color: #495057;
+  font-size: 1.1rem;
+  text-align: left;
 }
 
-table td .action {
-  border: 0;
-  padding: 8px;
+.call-customer {
+  color: #6c757d;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.call-date {
+  font-family: 'Courier New', monospace;
+  background: #f8f9fa;
+  padding: 0.3rem 0.6rem;
   border-radius: 6px;
-  display: inline-block;
-  margin-right: 6px;
-  transition: all 0.3s ease;
-  cursor: pointer;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
 
-table td .action:hover {
-  transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-}
-
-table td .action svg {
-  vertical-align: middle;
-}
-
-table td .badge {
-  padding: 6px 12px;
+/* 🏷️ Badges de Status */
+.badge {
+  padding: 8px 16px;
   border-radius: 20px;
   color: #FFF;
-  font-weight: 500;
-  font-size: 0.85em;
+  font-weight: 600;
+  font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   transition: all 0.3s ease;
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
 }
 
-table td .badge:hover {
+.badge:hover {
   transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.dashboard span {
-  margin: 2em 0;
-  font-size: 1.2em;
-  font-weight: 600;
+.badge-success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
 }
 
-.btn-more {
-  margin: 1.5em 0;
-  padding: 0.8em 1.5em;
-  background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
-  border: 0;
+.badge-warning {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  color: #212529;
+}
+
+.badge-danger {
+  background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+}
+
+.badge-info {
+  background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+}
+
+/* 🔧 Botões de Ação */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 0.6rem 1rem;
+  border: none;
   border-radius: 8px;
-  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: 500;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.action-btn.edit {
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  color: white;
+}
+
+.action-btn.edit:hover {
+  background: linear-gradient(135deg, #fd7e14 0%, #e55a00 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.3);
+}
+
+.action-btn.delete {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+.action-btn.delete:hover {
+  background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+.action-btn.view {
+  background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+  color: white;
+}
+
+.action-btn.view:hover {
+  background: linear-gradient(135deg, #6f42c1 0%, #5a2d91 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+}
+
+/* 🔘 Botão Carregar Mais */
+.btn-more {
+  margin: 2rem 0;
+  padding: 1.2rem 2.5rem;
+  background: linear-gradient(135deg, #495057 0%, #6c757d 100%);
+  border: 0;
+  border-radius: 15px;
+  font-size: 1.1rem;
   color: #FFF;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-weight: 500;
-  box-shadow: 0 4px 15px rgba(24, 28, 46, 0.3);
+  font-weight: 600;
+  box-shadow: 0 6px 20px rgba(73, 80, 87, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .btn-more:hover {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(24, 28, 46, 0.4);
+  background: linear-gradient(135deg, #6c757d 0%, #868e96 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(73, 80, 87, 0.4);
 }
 
 .btn-more:active {
-  transform: translateY(0);
+  transform: translateY(-1px);
 }
 
-@media screen and (max-width: 600px) {
-  table {
-    border: 0;
+/* 📱 Responsividade */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1rem;
   }
 
-  ;
-
-  table caption {
-    font-size: 1.3em;
+  .calls-list {
+    padding: 1.5rem;
   }
 
-  table thead {
+  .calls-table {
+    font-size: 0.9rem;
+  }
+
+  .calls-table th,
+  .calls-table td {
+    padding: 0.8rem 0.5rem;
+  }
+
+  .btn-more {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+  }
+
+  .new {
+    top: 2rem;
+    right: 1.5rem;
+    padding: 0.6rem 1.1rem;
+    min-width: 130px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .calls-table {
+    display: block;
     border: none;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
   }
 
-  table tr {
-    border-bottom: 3px solid #DDD;
+  .calls-table thead {
+    display: none;
+  }
+
+  .calls-table tbody {
     display: block;
-    margin-bottom: 0.60em;
   }
 
-  table td {
-    border-bottom: 1px solid #DDD;
+  .calls-table tr {
     display: block;
-    font-size: 0.8em;
-    text-align: right;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e9ecef;
   }
 
-  table td::before {
+  .calls-table td {
+    display: block;
+    text-align: left;
+    padding: 0.5rem 0;
+    border: none;
+  }
+
+  .calls-table td::before {
     content: attr(data-label);
-    float: left;
-    font-weight: bold;
+    font-weight: 600;
+    color: #495057;
     text-transform: uppercase;
+    font-size: 0.8rem;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .action-buttons {
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+
+  .action-btn {
+    min-width: 70px;
+    padding: 0.5rem 0.8rem;
+  }
+
+  .badge {
+    min-width: 80px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
   }
 }

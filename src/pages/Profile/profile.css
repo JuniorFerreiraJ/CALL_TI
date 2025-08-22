@@ -1,19 +1,44 @@
+/* 🎨 Página de Perfil - Design Moderno e Funcional */
+
+/* 📱 Layout Principal */
 .profile-container {
   display: flex;
-  background: linear-gradient(135deg, #f8f8f8 0%, #ffffff 100%);
-  border-radius: 12px;
-  padding: 1.5em;
-  align-items: center;
-  margin-bottom: 1.5em;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border-left: 4px solid #181c2e;
-  animation: slideInContainer 0.6s ease-out;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: calc(100vh - 200px);
 }
 
-@keyframes slideInContainer {
+/* 📝 Formulário Principal */
+.form-profile {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 25px;
+  padding: 3rem;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(233, 236, 239, 0.8);
+  width: 100%;
+  animation: fadeInUp 0.8s ease-out 0.3s both;
+  position: relative;
+  overflow: hidden;
+}
+
+.form-profile::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #28a745 100%);
+  border-radius: 25px 25px 0 0;
+}
+
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(40px);
   }
 
   to {
@@ -22,138 +47,277 @@
   }
 }
 
-.label-avatar {
-  width: 280px;
-  height: 280px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  cursor: pointer;
+/* 🎯 Cabeçalho do Formulário */
+.form-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 2px solid rgba(248, 249, 250, 0.8);
   position: relative;
-  border-radius: 50%;
-  overflow: hidden;
-  transition: all 0.3s ease;
 }
 
-.label-avatar:hover {
-  transform: scale(1.02);
+.form-header h2 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #2c3e50;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.label-avatar input {
-  display: none;
+.form-header h2::before {
+  content: '👤';
+  font-size: 1.8rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
-.label-avatar span {
-  z-index: 99;
-  position: absolute;
-  opacity: 0.8;
-  transition: all 0.3s ease;
-  background: rgba(24, 28, 46, 0.8);
-  padding: 12px;
-  border-radius: 50%;
-  backdrop-filter: blur(10px);
+.form-header p {
+  color: #6c757d;
+  font-size: 1.15rem;
+  margin: 0;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.label-avatar span:hover {
-  opacity: 1;
-  transform: scale(1.2);
-  background: rgba(24, 28, 46, 0.9);
-}
-
-.form-profile img {
-  margin-bottom: 1em;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid rgba(255, 255, 255, 0.8);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.form-profile img:hover {
-  border-color: rgba(24, 28, 46, 0.3);
-  transform: scale(1.02);
+/* 📋 Grupos de Campos */
+.form-group {
+  margin-bottom: 2rem;
+  position: relative;
 }
 
 .form-profile label {
-  margin-bottom: 0.5em;
-  font-size: 1.4em;
+  display: block;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
 }
 
+.form-profile label::before {
+  content: '🏷️';
+  font-size: 1.1rem;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-profile label:nth-of-type(1)::before {
+  content: '👤';
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-profile label:nth-of-type(2)::before {
+  content: '📧';
+  background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-profile label:hover {
+  color: #667eea;
+  transform: translateX(5px);
+}
+
+.form-profile label:hover::before {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* 🎨 Campos de Input */
 .form-profile input,
-textarea,
-select {
-  margin-bottom: 1em;
-  padding: 1em;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  max-width: 600px;
-  background-color: #fff;
-  transition: all 0.3s ease;
-  font-size: 1em;
+.form-profile textarea,
+.form-profile select {
+  width: 100%;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  padding: 1.2rem 1.5rem;
+  font-size: 1rem;
+  color: #495057;
+  background: #ffffff;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  font-weight: 500;
+  margin-bottom: 1.5rem;
 }
 
 .form-profile input:focus,
-textarea:focus,
-select:focus {
-  border-color: #181c2e;
-  box-shadow: 0 0 0 3px rgba(24, 28, 46, 0.1);
-  transform: translateY(-2px);
+.form-profile textarea:focus,
+.form-profile select:focus {
+  border-color: #667eea;
+  background: #ffffff;
+  box-shadow: 0 0 0 5px rgba(102, 126, 234, 0.12), 0 8px 25px rgba(102, 126, 234, 0.15);
+  transform: translateY(-3px);
+}
+
+.form-profile input:hover,
+.form-profile textarea:hover,
+.form-profile select:hover {
+  border-color: #adb5bd;
+  background: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
 .form-profile input:disabled {
   cursor: not-allowed;
+  background: #f8f9fa;
+  color: #6c757d;
+  opacity: 0.7;
 }
 
-.form-profile button {
-  max-width: 600px;
-  padding: 0.8em 1.5em;
-  background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
+/* 🔘 Botão de Salvar */
+.form-profile button[type="submit"] {
+  width: 100%;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
   color: white;
-  border: none;
-  border-radius: 8px;
-  font-size: 1.1em;
-  font-weight: 600;
+  border: 0;
+  border-radius: 20px;
+  padding: 1.4rem 2.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(24, 28, 46, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+  box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1;
+  min-height: 60px;
 }
 
-.form-profile button:hover {
-  background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+.form-profile button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.form-profile button[type="submit"]:hover::before {
+  left: 100%;
+}
+
+.form-profile button[type="submit"]:hover {
+  background: linear-gradient(135deg, #20c997 0%, #17a2b8 100%);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(40, 167, 69, 0.5);
+}
+
+.form-profile button[type="submit"]:active {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(24, 28, 46, 0.4);
 }
 
-.form-profile button:active {
-  transform: translateY(0);
-}
-
+/* 🚪 Botão de Logout */
 .logout-btn {
-  padding: 12px 30px;
+  width: auto;
+  padding: 1rem 2rem;
   border: 2px solid #e74c3c;
   background: linear-gradient(135deg, transparent 0%, rgba(231, 76, 60, 0.1) 100%);
-  border-radius: 8px;
-  font-size: 1.2em;
-  font-weight: 600;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 700;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #e74c3c;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-transform: uppercase;
+  letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 8px 25px rgba(231, 76, 60, 0.2);
+  min-height: 50px;
+  margin: 0 auto;
+}
+
+.logout-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.logout-btn:hover::before {
+  left: 100%;
 }
 
 .logout-btn:hover {
   background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
   color: white;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 35px rgba(231, 76, 60, 0.4);
+  border-color: #e74c3c;
 }
 
 .logout-btn:active {
-  transform: translateY(0);
+  transform: translateY(-2px);
+}
+
+/* 📱 Responsividade */
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 1rem;
+  }
+
+  .form-profile {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+
+  .form-profile button[type="submit"],
+  .logout-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-profile {
+    padding: 1.5rem;
+  }
+
+  .form-profile input,
+  .form-profile textarea,
+  .form-profile select {
+    padding: 1rem 1.2rem;
+    font-size: 0.95rem;
+  }
+
+  .form-profile button[type="submit"],
+  .logout-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
 }

@@ -19,16 +19,17 @@
 }
 
 .login {
-  background-color: #EAEAEC;
+  background-color: #ffffff;
   width: 600px;
+  max-width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border-radius: 12px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
   animation: slideUp 0.6s ease-out 0.2s both;
-  /* overflow: hidden;  pode deslocar popups nativos de autocomplete no macOS */
+  overflow: hidden;
 }
 
 @keyframes slideUp {
@@ -48,8 +49,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  position: static;
-  /* evita stacking contexts que podem afetar o dropdown do autocomplete */
+  position: relative;
 }
 
 .login-area::after {
@@ -97,15 +97,16 @@
 }
 
 form {
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   width: 90%;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
 }
 
 form h1 {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: #181c2e;
   font-weight: 600;
   font-size: 1.8rem;
@@ -125,21 +126,20 @@ form h1 {
 }
 
 .login input {
-  margin-bottom: 1rem;
-  height: 45px;
-  border-radius: 8px;
-  border: 2px solid transparent;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid #e1e5e9;
   padding: 12px 16px;
   font-size: 15px;
-  background-color: #FFF;
+  background-color: #ffffff;
   transition: all 0.3s ease;
   animation: fadeInUp 0.6s ease-out 0.6s both;
   outline: none;
 }
 
 .login input:focus {
-  border-color: #181c2e;
-  box-shadow: 0 0 0 3px rgba(24, 28, 46, 0.1);
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
   transform: translateY(-2px);
 }
 
@@ -153,9 +153,9 @@ form h1 {
 }
 
 form button {
-  height: 48px;
+  height: 50px;
   border: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   background: linear-gradient(135deg, #181c2e 0%, #2c3e50 100%);
   color: #FFF;
   font-size: 1.1rem;
@@ -167,13 +167,19 @@ form button {
   overflow: hidden;
 }
 
-form button:hover {
+form button:hover:not(:disabled) {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(24, 28, 46, 0.3);
 }
 
-form button:active {
+form button:active:not(:disabled) {
   transform: translateY(0);
+}
+
+form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 form button::before {
@@ -200,17 +206,19 @@ form button:hover::before {
   transition: all 0.3s ease;
   animation: fadeInUp 0.6s ease-out 1s both;
   position: relative;
+  text-align: center;
 }
 
 .login a::after {
   content: '';
   position: absolute;
   bottom: -2px;
-  left: 0;
+  left: 50%;
   width: 0;
   height: 2px;
   background: linear-gradient(90deg, #3498db, #2ecc71);
   transition: width 0.3s ease;
+  transform: translateX(-50%);
 }
 
 .login a:hover {
@@ -220,4 +228,33 @@ form button:hover::before {
 
 .login a:hover::after {
   width: 100%;
+}
+
+/* Responsividade melhorada */
+@media screen and (max-width: 600px) {
+  .login {
+    width: 100%;
+    margin: 0 16px;
+    border-radius: 12px;
+  }
+
+  .login-area img {
+    width: 140px;
+    height: 100px;
+    padding: 16px;
+  }
+
+  form h1 {
+    font-size: 1.5rem;
+  }
+
+  .login input,
+  form button {
+    height: 45px;
+  }
+
+  form {
+    width: 95%;
+    gap: 0.8rem;
+  }
 }

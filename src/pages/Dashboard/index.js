@@ -153,8 +153,17 @@ export default function Dashboard() {
             <FiMessageSquare size={25} />
           </Title>
 
-          <div className="container dashboard">
-            <span>Buscando chamados...</span>
+          <div className="dashboard">
+            <div className="calls-list">
+              <h2>
+                <FiMessageSquare size={24} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                Carregando Chamados
+              </h2>
+              <div className="loading">
+                <div className="spinner"></div>
+                <p>Buscando chamados...</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -170,71 +179,121 @@ export default function Dashboard() {
           <FiMessageSquare size={25} />
         </Title>
 
-        <>
-          {chamados.length === 0 ? (
-            <div className="container dashboard">
-              <span>Nenhum chamado encontrado...</span>
-              <Link to="/new" className="new">
-                <FiPlus color="#FFF" size={25} />
-                Novo chamado
-              </Link>
-            </div>
-          ) : (
-            <>
-              <Link to="/new" className="new">
-                <FiPlus color="#FFF" size={25} />
-                Novo chamado
-              </Link>
+        <div className="dashboard">
+          <>
+            {chamados.length === 0 ? (
+              <div className="calls-list">
+                <h2>
+                  <FiMessageSquare size={24} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
+                  Nenhum Chamado Encontrado
+                </h2>
+                <div className="empty">
+                  <FiMessageSquare size={48} />
+                  <p>Nenhum chamado encontrado ainda.</p>
+                  <p>Comece criando seu primeiro chamado.</p>
+                </div>
+                <Link to="/new" className="new">
+                  <FiPlus color="#FFF" size={25} />
+                  Novo chamado
+                </Link>
+              </div>
+            ) : (
+              <>
+                <Link to="/new" className="new">
+                  <FiPlus color="#FFF" size={25} />
+                  Novo chamado
+                </Link>
 
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">Cliente</th>
-                    <th scope="col">Assunto</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Cadastrando em</th>
-                    <th scope="col">#</th>
-                    <th scope="col">Agendado</th>
-                    <th scope="col">#</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {chamados.map((item, index) => {
-                    return (
-                      <tr key={index}>
-                        <td data-label="Cliente">{item.cliente}</td>
-                        <td data-label="Assunto">{item.assunto}</td>
-                        <td data-label="Status">
-                          <span className="badge" style={{ backgroundColor: item.status === 'Aberto' ? '#5cb85c' : '#999' }}>
-                            {item.status}
-                          </span>
-                        </td>
-                        <td data-label="Cadastrado">{item.createdFormat}</td>
-                        <td data-label="Agendado">{item.scheduledFormat || '-'}</td>
-                        <td data-label="#">
-                          <button className="action" style={{ backgroundColor: '#3583f6' }} onClick={() => toggleModal(item)}>
-                            <FiSearch color='#FFF' size={17} />
-                          </button>
-                          <Link to={`/new/${item.id}`} className="action" style={{ backgroundColor: '#f6a935' }}>
-                            <FiEdit2 color='#FFF' size={17} />
-                          </Link>
-                          <button className="action" style={{ backgroundColor: '#e83f5b' }} onClick={() => handleDelete(item.id)}>
-                            ✕
-                          </button>
-                        </td>
+                <div className="calls-list">
+                  <h2>
+
+                    Chamados Ativos ({chamados.length})
+                  </h2>
+
+                  <table className="calls-table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Assunto</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Data de Criação</th>
+                        <th scope="col">Data Agendada</th>
+                        <th scope="col">Ações</th>
                       </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+                    </thead>
+                    <tbody>
+                      {chamados.map((item, index) => {
+                        return (
+                          <tr key={index}>
+                            <td data-label="Cliente">
+                              <div className="call-customer">{item.cliente}</div>
+                            </td>
+                            <td data-label="Assunto">
+                              <div className="call-title">{item.assunto}</div>
+                            </td>
+                            <td data-label="Status">
+                              <span className={`badge badge-${item.status === 'Aberto' ? 'success' : 'warning'}`}>
+                                {item.status}
+                              </span>
+                            </td>
+                            <td data-label="Data de Criação">
+                              <div className="call-date">{item.createdFormat}</div>
+                            </td>
+                            <td data-label="Data Agendada">
+                              <div className="call-date">{item.scheduledFormat || '-'}</div>
+                            </td>
+                            <td data-label="Ações">
+                              <div className="action-buttons">
+                                <button
+                                  className="action-btn view"
+                                  onClick={() => toggleModal(item)}
+                                  title="Visualizar detalhes"
+                                >
+                                  <FiSearch size={14} />
+                                  Ver
+                                </button>
+                                <Link
+                                  to={`/new/${item.id}`}
+                                  className="action-btn edit"
+                                  title="Editar chamado"
+                                >
+                                  <FiEdit2 size={14} />
+                                  Editar
+                                </Link>
+                                <button
+                                  className="action-btn delete"
+                                  onClick={() => handleDelete(item.id)}
+                                  title="Excluir chamado"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
 
+                  {loadingMore && (
+                    <div className="loading">
+                      <div className="spinner"></div>
+                      <p>Buscando mais chamados...</p>
+                    </div>
+                  )}
 
-              {loadingMore && <h3>Buscando mais chamados...</h3>}
-              {!loadingMore && !isEmpty && <button className="btn-more" onClick={handleMore}>Buscar mais</button>}
-            </>
-          )}
-        </>
+                  {!loadingMore && !isEmpty && (
+                    <button className="btn-more" onClick={handleMore}>
+                      <FiSearch size={18} />
+                      Carregar Mais Chamados
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
+          </>
 
+        </div>
       </div>
 
       {showPostModal && (

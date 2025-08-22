@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Header from '../../components/Header'
 import Title from '../../components/Title'
 
-import { FiUser, FiEdit2, FiTrash2, FiSave, FiX, FiUsers, FiPlus } from 'react-icons/fi'
+import { FiUser, FiEdit2, FiTrash2, FiSave, FiX, FiUsers } from 'react-icons/fi'
 
 import { supabase } from '../../services/supabaseConnection'
 

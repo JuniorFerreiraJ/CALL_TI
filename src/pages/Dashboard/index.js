@@ -12,6 +12,12 @@ import { toast } from 'react-toastify'
 
 import './dashboard.css'
 
+function resumirMotivo(texto) {
+  if (!texto) return '-';
+  const lim = 80;
+  return texto.length > lim ? `${texto.slice(0, lim)}...` : texto;
+}
+
 export default function Dashboard() {
 
   const [chamados, setChamados] = useState([])
@@ -215,6 +221,7 @@ export default function Dashboard() {
                       <tr>
                         <th scope="col">Cliente</th>
                         <th scope="col">Assunto</th>
+                        <th scope="col">Motivo</th>
                         <th scope="col">Status</th>
                         <th scope="col">Data de Criação</th>
                         <th scope="col">Data Agendada</th>
@@ -230,6 +237,12 @@ export default function Dashboard() {
                             </td>
                             <td data-label="Assunto">
                               <div className="call-title">{item.assunto}</div>
+                            </td>
+                            <td data-label="Motivo">
+                              <div className="call-reason" title={item.complemento || ''} aria-label={item.complemento || 'Sem motivo'}>
+                                <FiMessageSquare size={14} className="reason-icon" />
+                                {resumirMotivo(item.complemento)}
+                              </div>
                             </td>
                             <td data-label="Status">
                               <span className={`badge badge-${item.status === 'Aberto' ? 'success' : 'warning'}`}>

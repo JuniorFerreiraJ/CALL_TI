@@ -131,14 +131,7 @@ export default function New() {
       toast.error('Cadastre um cliente primeiro.');
       return;
     }
-    if (scheduledAt) {
-      const now = new Date();
-      const selected = new Date(scheduledAt);
-      if (selected.getTime() < now.getTime()) {
-        toast.error('A data de agendamento não pode ser no passado.');
-        return;
-      }
-    }
+    // Permitido agendar no passado para registrar chamados antigos
 
     setIsSubmitting(true);
 
@@ -303,16 +296,15 @@ export default function New() {
               <input
                 type="datetime-local"
                 value={scheduledAt}
-                min={(new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000)).toISOString().slice(0, 16)}
                 onChange={(e) => setScheduledAt(e.target.value)}
               />
             </div>
 
             <div className="form-group">
-              <label>Complemento</label>
+              <label>Motivo do Chamado</label>
               <textarea
                 type="text"
-                placeholder="Descreva seu problema (opcional)."
+                placeholder="Explique claramente o motivo do chamado (ex.: erro X, solicitação Y)."
                 value={complemento}
                 maxLength={500}
                 onChange={(e) => setComplemento(e.target.value)}

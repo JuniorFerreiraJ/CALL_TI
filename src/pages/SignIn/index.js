@@ -76,7 +76,7 @@ export default function SignIn() {
           </button>
         </form>
 
-        <Link to="/register">Criar uma conta</Link>
+        <Link to="/register">Criar uma gotica</Link>
       </div>
     </div>
   )
